@@ -1,0 +1,7 @@
+mystring = "There is String"
+
+print(len(mystring))  // To print the length of string
+
+print(mystring[0:5]) // to print particular part of string (In this case output will be only There word)
+
+print(mystring[0:18:2]) // to print character from in between but with a sequence like every 2nd character or 3rd character will be printed
