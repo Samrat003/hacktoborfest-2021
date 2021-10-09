@@ -3,7 +3,6 @@
 from sys import argv
 
 
-
 class Direction:
     def __init__(self, name, alpha):
         self.name = name
@@ -47,6 +46,15 @@ class State:
 
     def achieved_state(self):
         return(self.location == self.goal)
+    
+    def draw_state(self):
+        map_ = [[' ' for x in range(self.size[1])] for y in range(self.size[0])]
+
+        for (y, x) in self.obstacles: map_[y][x] = '#'
+        map_[self.location[0]][self.location[1]] = '@'
+        if self.goal == self.location: map_[self.location[0]][self.location[1]] = '+'
+        else: map_[self.goal[0]][self.goal[1]] = '.'
+
 
 class InvertedPriorityQueue():
     def __init__(self):
@@ -106,6 +114,12 @@ def create_world_model(inputFile): #input file parsing to create the initial wor
     
     return(State(size=size, obstacles=obstacles, location = location, cost=0, action=None, parent=None, goal=goal))
 
+def clean_path(path):
+    cleanPath = []
+    for i in path:
+        cleanPath.append(i.name)
+    return(cleanPath)
+
 
 ##### Treatment pipeline
 try:
@@ -114,9 +128,10 @@ except IndexError:
     inputFile = None
 
 wM = create_world_model(inputFile)
+location = [wM.goal, wM.location]
 bestPath = a_star(wM)
 if bestPath == None:
     print("No path would be found")
 else:
-    print(bestPath)
+    print("{}->{} : [{}]".format(location[1], location[0], ", ".join(bestPath)))
 
